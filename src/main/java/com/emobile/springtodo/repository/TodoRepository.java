@@ -15,9 +15,9 @@ public interface TodoRepository {
 
     long countAll();
 
-    Todo update(Long id, String title, String description, boolean completed);
+    Optional<Todo> update(Long id, String title, String description, boolean completed);
 
-    void deleteById(Long id);
+    boolean deleteById(Long id);
 
     long countCompleted();
 }
