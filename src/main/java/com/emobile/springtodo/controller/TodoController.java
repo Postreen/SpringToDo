@@ -51,6 +51,7 @@ public class TodoController implements TodoApi {
         return todoService.update(id, request);
     }
 
+    @Override
     @PatchMapping("/{id}")
     public TodoResponse patch(@PathVariable Long id, @Valid @RequestBody PatchTodoRequest request) {
         log.info("HTTP PATCH /todos/{} - patch", id);

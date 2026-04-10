@@ -1,0 +1,2 @@
+TRUNCATE TABLE todos;
+ALTER SEQUENCE todos_id_seq RESTART WITH 1;

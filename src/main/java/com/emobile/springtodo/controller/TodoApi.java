@@ -1,9 +1,6 @@
 package com.emobile.springtodo.controller;
 
-import com.emobile.springtodo.dto.CreateTodoRequest;
-import com.emobile.springtodo.dto.TodoListResponse;
-import com.emobile.springtodo.dto.TodoResponse;
-import com.emobile.springtodo.dto.UpdateTodoRequest;
+import com.emobile.springtodo.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +32,12 @@ public interface TodoApi {
     TodoResponse update(
             @PathVariable Long id,
             @Valid @RequestBody UpdateTodoRequest request
+    );
+
+    @Operation(summary = "Patch TODO")
+    TodoResponse patch(
+            @PathVariable Long id,
+            @Valid @RequestBody PatchTodoRequest request
     );
 
     @Operation(summary = "Delete TODO")
