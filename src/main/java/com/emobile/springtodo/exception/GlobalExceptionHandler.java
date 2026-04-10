@@ -1,5 +1,7 @@
 package com.emobile.springtodo.exception;
 
+import com.emobile.springtodo.exception.model.ErrorCode;
+import com.emobile.springtodo.exception.model.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,7 @@ public class GlobalExceptionHandler {
     public ErrorResponseDto handleNotFound(TodoNotFoundException ex, HttpServletRequest request) {
         return new ErrorResponseDto(
                 HttpStatus.NOT_FOUND.value(),
-                "NOT_FOUND",
+                ErrorCode.NOT_FOUND,
                 ex.getMessage(),
                 List.of(),
                 request.getRequestURI()
@@ -38,9 +40,24 @@ public class GlobalExceptionHandler {
 
         return new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
-                "VALIDATION_ERROR",
+                ErrorCode.VALIDATION_ERROR,
                 "Request validation failed",
                 details,
+                request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(InvalidPatchRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDto handleInvalidPatch(
+            InvalidPatchRequestException ex,
+            HttpServletRequest request
+    ) {
+        return new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ErrorCode.BAD_REQUEST,
+                ex.getMessage(),
+                null,
                 request.getRequestURI()
         );
     }
@@ -50,7 +67,7 @@ public class GlobalExceptionHandler {
     public ErrorResponseDto handleMalformedJson(HttpMessageNotReadableException ex, HttpServletRequest request) {
         return new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
-                "BAD_REQUEST",
+                ErrorCode.BAD_REQUEST,
                 "Malformed request body",
                 List.of(),
                 request.getRequestURI()
@@ -63,7 +80,7 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error", ex);
         return new ErrorResponseDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "INTERNAL_ERROR",
+                ErrorCode.INTERNAL_ERROR,
                 ex.getMessage() != null ? ex.getMessage() : "Unexpected error",
                 List.of(),
                 request.getRequestURI()

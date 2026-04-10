@@ -1,9 +1,6 @@
 package com.emobile.springtodo.controller;
 
-import com.emobile.springtodo.dto.CreateTodoRequest;
-import com.emobile.springtodo.dto.TodoListResponse;
-import com.emobile.springtodo.dto.TodoResponse;
-import com.emobile.springtodo.dto.UpdateTodoRequest;
+import com.emobile.springtodo.dto.*;
 import com.emobile.springtodo.service.TodoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -22,7 +19,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @Validated
 @RequiredArgsConstructor
 public class TodoController implements TodoApi {
-
     private final TodoService todoService;
 
     @Override
@@ -55,6 +51,12 @@ public class TodoController implements TodoApi {
     public TodoResponse update(@PathVariable Long id, @Valid @RequestBody UpdateTodoRequest request) {
         log.info("Updating TODO id {} with data {}", id, request);
         return todoService.update(id, request);
+    }
+
+    @PatchMapping("/{id}")
+    public TodoResponse patch(@PathVariable Long id, @Valid @RequestBody PatchTodoRequest request) {
+        log.info("Patching TODO id {} with data {}", id, request);
+        return todoService.patch(id, request);
     }
 
     @Override
