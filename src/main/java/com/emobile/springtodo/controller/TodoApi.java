@@ -32,7 +32,10 @@ public interface TodoApi {
     );
 
     @Operation(summary = "Update TODO")
-    TodoResponse update(@PathVariable Long id, @Valid @RequestBody UpdateTodoRequest request);
+    TodoResponse update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateTodoRequest request
+    );
 
     @Operation(summary = "Delete TODO")
     void delete(@PathVariable Long id);

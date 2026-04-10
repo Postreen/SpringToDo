@@ -20,11 +20,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TodoNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponseDto handleNotFound(TodoNotFoundException ex, HttpServletRequest request) {
+        log.warn("Todo not found: path={}, message={}", request.getRequestURI(), ex.getMessage());
+
         return new ErrorResponseDto(
                 HttpStatus.NOT_FOUND.value(),
                 ErrorCode.NOT_FOUND,
                 ex.getMessage(),
-                List.of(),
                 request.getRequestURI()
         );
     }
@@ -37,6 +38,8 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .toList();
+
+        log.warn("Request validation failed: path={}, errors={}", request.getRequestURI(), details);
 
         return new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
@@ -53,11 +56,12 @@ public class GlobalExceptionHandler {
             InvalidPatchRequestException ex,
             HttpServletRequest request
     ) {
+        log.warn("Invalid patch request: path={}, message={}", request.getRequestURI(), ex.getMessage());
+
         return new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ErrorCode.BAD_REQUEST,
                 ex.getMessage(),
-                null,
                 request.getRequestURI()
         );
     }
@@ -65,11 +69,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDto handleMalformedJson(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        log.warn("Malformed request body: path={}", request.getRequestURI());
+
         return new ErrorResponseDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ErrorCode.BAD_REQUEST,
                 "Malformed request body",
-                List.of(),
                 request.getRequestURI()
         );
     }
@@ -77,12 +82,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponseDto handleOther(Exception ex, HttpServletRequest request) {
-        log.error("Unexpected error", ex);
+        log.error("Unexpected error: path={}", request.getRequestURI(), ex);
+
         return new ErrorResponseDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ErrorCode.INTERNAL_ERROR,
-                ex.getMessage() != null ? ex.getMessage() : "Unexpected error",
-                List.of(),
+                "Internal server error",
                 request.getRequestURI()
         );
     }

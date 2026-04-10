@@ -3,8 +3,6 @@ package com.emobile.springtodo.controller;
 import com.emobile.springtodo.dto.*;
 import com.emobile.springtodo.service.TodoService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -25,14 +23,14 @@ public class TodoController implements TodoApi {
     @PostMapping
     @ResponseStatus(CREATED)
     public TodoResponse create(@Valid @RequestBody CreateTodoRequest request) {
-        log.info("Creating TODO: {}", request);
+        log.info("HTTP POST /todos - create todo");
         return todoService.create(request);
     }
 
     @Override
     @GetMapping("/{id}")
     public TodoResponse getById(@PathVariable Long id) {
-        log.info("Fetching TODO with id: {}", id);
+        log.debug("HTTP GET /todos/{} - fetch by id", id);
         return todoService.getById(id);
     }
 
@@ -42,20 +40,20 @@ public class TodoController implements TodoApi {
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(defaultValue = "0") int offset
     ) {
-        log.info("Fetching TODO list with limit {} and offset {}", limit, offset);
+        log.debug("HTTP GET /todos - list (limit={}, offset={})", limit, offset);
         return todoService.getAll(limit, offset);
     }
 
     @Override
     @PutMapping("/{id}")
     public TodoResponse update(@PathVariable Long id, @Valid @RequestBody UpdateTodoRequest request) {
-        log.info("Updating TODO id {} with data {}", id, request);
+        log.info("HTTP PUT /todos/{} - update", id);
         return todoService.update(id, request);
     }
 
     @PatchMapping("/{id}")
     public TodoResponse patch(@PathVariable Long id, @Valid @RequestBody PatchTodoRequest request) {
-        log.info("Patching TODO id {} with data {}", id, request);
+        log.info("HTTP PATCH /todos/{} - patch", id);
         return todoService.patch(id, request);
     }
 
@@ -63,7 +61,7 @@ public class TodoController implements TodoApi {
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        log.info("Deleting TODO with id {}", id);
+        log.info("HTTP DELETE /todos/{} - delete", id);
         todoService.delete(id);
     }
 }
