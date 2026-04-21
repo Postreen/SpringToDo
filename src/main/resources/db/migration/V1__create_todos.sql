@@ -1,4 +1,4 @@
-CREATE TABLE todos (
+CREATE TABLE IF NOT EXISTS todos (
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(120) NOT NULL,
     description VARCHAR(500),

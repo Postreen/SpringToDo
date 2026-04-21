@@ -58,6 +58,7 @@ public class TodoService {
                 todoMapper.toResponseList(todoRepository.findAll(limit, offset)),
                 limit,
                 offset,
+                offset / limit + 1,
                 todoRepository.countAll()
         );
     }

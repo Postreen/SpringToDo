@@ -6,6 +6,7 @@ public record TodoListResponse(
         List<TodoResponse> items,
         int limit,
         int offset,
+        int page,
         long total
 ) {
 }

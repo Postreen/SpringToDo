@@ -3,6 +3,8 @@ package com.emobile.springtodo.controller;
 import com.emobile.springtodo.dto.*;
 import com.emobile.springtodo.service.TodoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -38,8 +40,8 @@ public class TodoController implements TodoApi {
     @Override
     @GetMapping
     public TodoListResponse getAll(
-            @RequestParam(defaultValue = "20") int limit,
-            @RequestParam(defaultValue = "0") int offset
+            @RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit,
+            @RequestParam(defaultValue = "0") @Min(0) int offset
     ) {
         log.debug("HTTP GET /todos - list (limit={}, offset={})", limit, offset);
         return todoService.getAll(limit, offset);
