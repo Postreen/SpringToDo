@@ -54,12 +54,18 @@ public class TodoService {
     public TodoListResponse getAll(int limit, int offset) {
         log.debug("Fetching todo list with limit={} and offset={}", limit, offset);
 
+        long total = todoRepository.countAll();
+
+        int page = offset / limit + 1;
+        int totalPages = (int) Math.ceil((double) total / limit);
+
         return new TodoListResponse(
                 todoMapper.toResponseList(todoRepository.findAll(limit, offset)),
                 limit,
                 offset,
-                offset / limit + 1,
-                todoRepository.countAll()
+                page,
+                totalPages,
+                total
         );
     }
 

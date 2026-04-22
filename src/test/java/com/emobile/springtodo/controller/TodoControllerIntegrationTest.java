@@ -75,6 +75,8 @@ class TodoControllerIntegrationTest extends ContainersConfig {
                 .andExpect(jsonPath("$.items[0].updatedAt").exists())
                 .andExpect(jsonPath("$.limit").value(1))
                 .andExpect(jsonPath("$.offset").value(1))
+                .andExpect(jsonPath("$.page").value(2))
+                .andExpect(jsonPath("$.totalPages").value(2))
                 .andExpect(jsonPath("$.total").value(2));
     }
 

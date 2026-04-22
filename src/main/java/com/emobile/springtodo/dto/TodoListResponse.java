@@ -7,6 +7,7 @@ public record TodoListResponse(
         int limit,
         int offset,
         int page,
+        int totalPages,
         long total
 ) {
 }
